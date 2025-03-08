@@ -2,9 +2,9 @@
 
 To use server you need to:
 1. Have node.js installed
-2. Have npm.js installed
+2. Have npm installed
 
-Pre-startup (do it only one time after download):
+Pre-startup, do it only one time after download/update (if dependencies change):
 1. download the source code
 2. use "npm install" inside the projects directory
 3. wait for modules to get installed
