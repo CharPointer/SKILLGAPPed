@@ -28,10 +28,13 @@ app.get("/getFilesNames", (req, res) => {
 })
 
 app.get("/runPython", (req, res) => {
-    var Name = "Test.py" // need for this to be able to read json file/data from req and and do shit
+    var Name = "../Ai/PythonRunAi.py" // need for this to be able to read json file/data from req and and do shit
 
-    const pythonProcess = spawn('python',[path.resolve(UploadPath, Name)]);
+    console.log("started")
+    const pythonProcess = spawn(path.resolve(__dirname, './Aivenv/bin/python'),[path.resolve(UploadPath, Name)]);
+    console.log("start")
     pythonProcess.stdout.setEncoding('utf8');
+    
     pythonProcess.stdout.on('data', (data) => {
         console.log(data)
         // res.sendStatus(200);
@@ -40,6 +43,14 @@ app.get("/runPython", (req, res) => {
         });
 
         res.end();
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    pythonProcess.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
     });
 })
 

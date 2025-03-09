@@ -173,3 +173,4 @@ cython_debug/
 # node npm packages
 node_modules/
 UploadedFiles/*
+Ai/Model/
