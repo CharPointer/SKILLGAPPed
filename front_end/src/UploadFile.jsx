@@ -43,7 +43,7 @@ function UploadFile(){
     async function handleFileUpload(uploadedFile){
         const formData = new FormData();
         formData.append("filetoupload", uploadedFile); // Must match the field name in Express
-        
+        console.log()
         try {
             const response = await fetch("http://localhost:3000/fileupload", {
                 method: "POST",

@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "BuildProjectLinux": "npm install && python -m venv Aivenv && source Aivenv/bin/activate && pip install -r requirements.txt && cd front_end && npm install && npm run build && cd .. && exit 1",
+    "BuildProjectWindows": "npm install && python -m venv Aivenv && Aivenv/Scripts/activate && pip install -r requirements.txt && cd front_end && npm install && npm run build && cd .. && exit 1",
+    "Build": "cd front_end && npm run build && cd .. && exit 1",
     "Devstart": "nodemon init.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
