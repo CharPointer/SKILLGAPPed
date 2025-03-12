@@ -1,5 +1,9 @@
 # SKILLGAPPed
 
+Hackaton project
+
+# Build
+
 THIS WILL INSTALL CUDA VERSION OF Llama_cpp_python CPU UNTESTED, MIGHT BE NEEDED TO REINSTALL Llama.cpp
 
 DEFAULT PORT: 3000
@@ -7,7 +11,7 @@ DEFAULT PORT: 3000
 To use server you need to:
 1. Have node.js installed
 2. Have npm installed
-3. Installed pytorch with cuda if you want to use GPU
+3. Installed pytorch (with cuda if you want to use GPU)
 
 Pre-startup, do it only one time after download/update (if dependencies change):
 1. download the source code

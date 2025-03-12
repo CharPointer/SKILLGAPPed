@@ -17,12 +17,31 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
 
 app.get("/old", (req, res) => {
     res.render("index.ejs");
 }) 
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'front_end', 'dist', 'index.html'));
 });
 
@@ -81,6 +100,7 @@ app.post("/getFileData", (req, res) => {
 }) 
 
 app.post("/fileupload", (req,res) => {
+    console.log("tried to upload")
     var form = new formidable.IncomingForm();
     console.log(req.body)
     form.parse(req, function (err, fields, files) {
@@ -89,7 +109,10 @@ app.post("/fileupload", (req,res) => {
         console.log(files.filetoupload[0].filepath)
         var newpath = path.resolve(UploadPath,oldName);
         fs.copyFile(oldpath, newpath, fs.constants.COPYFILE_EXCL, function (err) {
-          if (err) throw err;
+          if (err) {
+            console.error("Same file egzist");
+            res.status(400).send("error same file exists");
+          };
           res.write('File uploaded and moved!');
           res.end();
         });
