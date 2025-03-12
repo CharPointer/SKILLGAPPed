@@ -10,16 +10,21 @@ const UploadPath = path.resolve(__dirname, 'UploadedFiles'); // ON GAWDS LIFE US
 const port = 3000;
 
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, 'front_end', 'dist')));
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-  
 
-app.get("/", (req, res) => {
+
+app.get("/old", (req, res) => {
     res.render("index.ejs");
 }) 
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'front_end', 'dist', 'index.html'));
+});
 
 app.get("/getFilesNames", (req, res) => {
     fs.readdir(UploadPath, (err,files) => {
