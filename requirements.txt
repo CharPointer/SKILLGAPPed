@@ -1,0 +1,6 @@
+diskcache==5.6.3
+Jinja2==3.1.6
+llama_cpp_python==0.3.7 -C cmake.args="-DGGML_CUDA=on"
+MarkupSafe==3.0.2
+numpy==2.2.3
+typing_extensions==4.12.2

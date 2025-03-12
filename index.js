@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path")
 const spawn = require("child_process").spawn;
 const express = require("express");
+const bodyParser = require('body-parser');
 const app = express();
 
 const UploadPath = path.resolve(__dirname, 'UploadedFiles'); // ON GAWDS LIFE USE path.resolve for paths, cuz we dont know if we are going to use Windows pc or Linux pc for deployment
@@ -10,6 +11,11 @@ const port = 3000;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+  
 
 app.get("/", (req, res) => {
     res.render("index.ejs");
@@ -28,10 +34,13 @@ app.get("/getFilesNames", (req, res) => {
 })
 
 app.get("/runPython", (req, res) => {
-    var Name = "Test.py" // need for this to be able to read json file/data from req and and do shit
+    var Name = "./Ai/PythonRunAi.py" // need for this to be able to read json file/data from req and and do shit
 
-    const pythonProcess = spawn('python',[path.resolve(UploadPath, Name)]);
+    console.log("started")
+    const pythonProcess = spawn(path.resolve(__dirname, './Aivenv/bin/python'),[path.resolve(__dirname, Name)]);
+    console.log("start")
     pythonProcess.stdout.setEncoding('utf8');
+    
     pythonProcess.stdout.on('data', (data) => {
         console.log(data)
         // res.sendStatus(200);
@@ -41,12 +50,29 @@ app.get("/runPython", (req, res) => {
 
         res.end();
     });
+
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    pythonProcess.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+    });
 })
 
-app.get("/getFileData", (req, res) => {
-    // here will be the data for the vizualization to be sent to the client
-    res.sendStatus(200);
-    res.end();
+app.post("/getFileData", (req, res) => {
+    var data = req.body;
+    console.log(data["Location"] + "/" + data["FileName"]);
+
+    var filePath = path.resolve(__dirname, data["Location"]);
+    filePath = path.resolve(filePath, data["FileName"]);
+
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error("Error sending the file", err);
+            res.status(500).send('error sending file');
+        }
+    })
 }) 
 
 app.post("/fileupload", (req,res) => {
