@@ -1,0 +1,17 @@
+TYPE:SCATTERPLOT
+TITLE:"City Latitude vs. Population, Colored by Country"
+X:latitude
+X_name:Latitude
+Y:population
+Y_name:Population
+Z:null
+Z_name: null
+COLOR:country
+SIZE:null
+SCALE:null
+TRENDLINE:null
+NORMALIZE:null
+NBINS:null
+POINTS:null
+BOXLINE:null
+BARMODE:null

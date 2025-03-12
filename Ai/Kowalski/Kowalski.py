@@ -16,6 +16,9 @@ import re
 import csv
 import sys
 
+import os 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 # Reads many kinds of files into pandas DataFrames
 # Supported formats: txt, csv, json, xls, xlsx, tsv, parquet, xml, html, h5, feather, orc, dta, sav
 def read_file(filepath, extension='txt'):
@@ -318,7 +321,7 @@ def main():
         sys.exit(1)
 
     # Filepath
-    base_prompt_filepath = "base_prompt.txt" # hard-coded path to 
+    base_prompt_filepath = dir_path + "/base_prompt.txt" # hard-coded path to 
     # Filepaths from command-line arguments
     data_filepath = sys.argv[1]  # Path to data file
 
