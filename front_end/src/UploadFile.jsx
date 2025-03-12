@@ -4,6 +4,8 @@ import FileInfoPopup from './FileInfoPopup.jsx';
 
 function UploadFile(){
 
+    // console.log("he1lp")
+
     const fileInputRef=useRef(null);
     const [file, setFile] = useState(null);
     const [status, setStatus]=useState("idle");
@@ -13,6 +15,7 @@ function UploadFile(){
 
     //opens file input, because its invis and i stupid
     function UploadThatBoi(){
+        // console.log(fileInputRef)
         if(fileInputRef.current){
             fileInputRef.current.click();
         }
@@ -43,7 +46,6 @@ function UploadFile(){
     async function handleFileUpload(uploadedFile){
         const formData = new FormData();
         formData.append("filetoupload", uploadedFile); // Must match the field name in Express
-        console.log()
         try {
             const response = await fetch("http://localhost:3000/fileupload", {
                 method: "POST",
