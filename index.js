@@ -77,6 +77,7 @@ app.post("/getFileData", (req, res) => {
 
 app.post("/fileupload", (req,res) => {
     var form = new formidable.IncomingForm();
+    console.log(req.body)
     form.parse(req, function (err, fields, files) {
         var oldpath = files.filetoupload[0].filepath;
         var oldName = files.filetoupload[0].originalFilename;
