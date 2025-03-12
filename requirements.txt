@@ -11,6 +11,7 @@ httpcore==1.0.7
 httpx==0.28.1
 idna==3.10
 Jinja2==3.1.6
+kaleido==0.2.1
 llama_cpp_python==0.3.7 -C cmake.args="-DGGML_CUDA=on"
 MarkupSafe==3.0.2
 narwhals==1.30.0
