@@ -1,6 +1,6 @@
 import sys
 import argparse
-import google.generativeai as generativeai
+from google import generativeai
 from llama_cpp import Llama
 
 gemini_version = "gemini-pro"

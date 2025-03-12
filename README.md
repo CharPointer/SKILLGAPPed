@@ -2,9 +2,12 @@
 
 THIS WILL INSTALL CUDA VERSION OF Llama_cpp_python CPU UNTESTED, MIGHT BE NEEDED TO REINSTALL Llama.cpp
 
+DEFAULT PORT: 3000
+
 To use server you need to:
 1. Have node.js installed
 2. Have npm installed
+3. Installed pytorch with cuda if you want to use GPU
 
 Pre-startup, do it only one time after download/update (if dependencies change):
 1. download the source code
@@ -17,13 +20,19 @@ Pre-startup, do it only one time after download/update (if dependencies change):
 
     4.2. "python -m venv Aivenv && Aivenv\Scripts\activate && pip install -r requirements.txt && deactivate" for Windows
 
+5. For FrontEnd run command "cd front_end && npm install && npm build && cd .."
+
 
 startup:
-1. inside project directory type:
+1. deployment
 
-    1.1. "npm run devStart" to start server with live updates
+    1.1 inside project directory "node index.js" to start server without live updates
 
-    2.1. "node index.js" to start server without live updates
+2. development
+
+    2.1 programming backend: "npm run devStart" to start server with live updates (backend only)
+
+    2.2 programming frontend: "cd front_end" and "npm run dev" (for working with only front end you dont need to build app, but for it to work with backend YOU WILL NEED to do that) 
 
 
 # Infrastructure
