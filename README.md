@@ -41,7 +41,7 @@ Backend:
 Node.js with Express.js
 
 Frontend: 
-React
+Reacte
 
 AI pipeline:
 1. python script "Kasperski" which takes dataset (csv for now) Fixes it and generates prompt for LLM
