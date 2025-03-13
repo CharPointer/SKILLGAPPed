@@ -1,10 +1,11 @@
 TYPE:SCATTERPLOT
-TITLE:"City Latitude vs. Longitude Colored by Population"
+TITLE:"City Latitude vs. Longitude, Colored by Population"
 X:longitude
 X_name:Longitude
 Y:latitude
 Y_name:Latitude
 Z:null
+Z_name:null
 COLOR:population
 SIZE:null
 SCALE:viridis

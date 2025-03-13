@@ -6,10 +6,13 @@ import json
 import os
 
 
+
 cwd = os.getcwd()
 with open(cwd + '/Ai/api.json') as f:
     Api = json.load(f)
 
+
+PythonLoc = cwd + "/Aivenv/bin/python"
 API_KEY = Api["Gemini"]
 
 client = genai.Client(api_key=API_KEY)
@@ -35,10 +38,13 @@ def write_script(script, filepath):
 
 def run_kowalski(data_csv):
     # Run Kowalsky.py with data.csv as argument
-    result = subprocess.run(['python', 'Ai/Kowalski/Kowalski.py', data_csv], capture_output=True, text=True)
+
+    result = subprocess.run([PythonLoc, 'Ai/Kowalski/Kowalski.py', data_csv], capture_output=True, text=True)
     
     # Check if the script ran successfully
     if result.returncode != 0:
+        print(f"Kowalski.py failed with error: {result.stderr}")
+        exit(1)
         raise Exception(f"Kowalski.py failed with error: {result.stderr}")
     
     # Get the output CSV file path
@@ -47,10 +53,13 @@ def run_kowalski(data_csv):
 
 def run_interpreter(data_bumbuojam, csv_file_path):
     # Run Interpreter.py with data.bumbuojam and the CSV file path as arguments
-    result = subprocess.run(['python', 'Ai/Interpreter/Interpreter.py', data_bumbuojam, csv_file_path], capture_output=True, text=True)
+    result = subprocess.run([PythonLoc, 'Ai/Interpreter/Interpreter.py', data_bumbuojam, csv_file_path], capture_output=True, text=True)
     
     # Check if the script ran successfully
     if result.returncode != 0:
+        print(f"Interpreter.py failed with error: {result.stderr}")
+        exit(1)
+
         raise Exception(f"Interpreter.py failed with error: {result.stderr}")
     
     # Get the output (two paths separated by newline)
