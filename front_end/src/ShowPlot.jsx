@@ -1,11 +1,12 @@
 
-
 function ShowPlot(){
     return(
         <div className="ShowPlot-body">
-            <h2>Your data</h2>
+            <h1>Your data</h1>
             <hr></hr>
-            <p></p>
+            <div>
+                {/*ploooootiing*/}
+            </div>
         </div>
     );
 }
