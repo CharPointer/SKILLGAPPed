@@ -1,7 +1,6 @@
 import NavBar from "./NavBar.jsx";
 import ShowPlot from "./ShowPlot.jsx";
 import UploadFile from "./UploadFile.jsx";
-import GeneratePlot from "./GeneratePlot.jsx"
 import React,{useEffect} from 'react';
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
           <ShowPlot/>
           <div className="UltraCoolButtons">
             <UploadFile/>
-            <GeneratePlot/>
           </div>
     </div>
   );
