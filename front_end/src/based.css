@@ -64,6 +64,7 @@ hr{
   border-top:3px solid  hsla(176, 65%, 50%, 0.86);
 }
 
+/*Your files component items*/
 .YourFiles{
   margin-top: 90px;
   margin-left:20px;
@@ -82,7 +83,24 @@ hr{
   font-weight: bold;
 }
 
-
+.YourFiles-Buttons{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+.GetFileNames-btn{
+  background-color: hsla(176, 70%, 77%, 0.86);
+  border:none;
+  border-radius: 25px;
+  margin-top:10px;
+  width: 60%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+.GetFileNames-btn:hover{
+  cursor: pointer;
+  background-color: hsl(176, 78%, 80%);
+}
 
 /*FILE UPLOAD BUTTON*/
 .UltraCoolButtons{
@@ -130,12 +148,7 @@ hr{
   justify-content: center;
   align-items:center;
 }
-.YourFiles-Buttons{
 
-}
-.GetFileNames-btn{
-  
-}
 .popup-inner{
   position:relative;
   padding:32px;
