@@ -2,6 +2,7 @@ import uploadPicture from './assets/uploadImg.png';
 import React, {useRef, useState, useEffect} from 'react'
 import FileInfoPopup from './FileInfoPopup.jsx';
 import OtherPopups from './OtherPopups.jsx';
+
 function UploadFile(){
 
     // console.log("he1lp")
@@ -11,7 +12,6 @@ function UploadFile(){
 
     const [status, setStatus]=useState("idle"); //idle,uploading, success,error
 
-    const [uploadProgress, setUploadProgress] = useState(0); //progress barui
 
     const [buttonPopUp,setButtonPopUp]=useState(false);
     const [upload, setUpload]=useState(false);
@@ -43,15 +43,14 @@ function UploadFile(){
             const fileType =uploadedFile.name.split('.').pop().toLowerCase();
 
             if (supportedFileType.includes(fileType)) {
+                
+                setStatus("idle"); // Reset status before setting the new file
+                setErrorConst(false); // Hide error popup immediately
+                setSuccessConst(false);
                 setFile(uploadedFile);
 
-                setUploadProgress(0);
                 setButtonPopUp(true);
                 setUploadingConst(true);
-            } else {
-                setFile(null); 
-                setStatus("error");
-                setErrorConst(true);
             }
         }
     }
@@ -74,12 +73,22 @@ function UploadFile(){
             setStatus("success");
             setUploadingConst(false);
             setSuccessConst(true);
-            setUploadProgress(100);
+            
+            setFile(null);
+            fileInputRef.current.value = "";
+            setUpload(false);
+
             console.log("File uploaded successfully");
-        } catch (error) {
+
+        } catch (error) 
+        {
+            setUpload(false);
             setStatus("error");
-            setUploadProgress(0);
+
+            setFile(null);
+            fileInputRef.current.value = "";
             setErrorConst(true);
+            console.log("bloke");
         }
         
     }
@@ -120,6 +129,7 @@ function UploadFile(){
                 <p className="UploadFileText">Upload your file! </p>
                 <img src={uploadPicture} alt="UploadImg"></img>
                 <input title="" placeholder="" type="file"ref={fileInputRef}style={{display: "none"}} onChange={HandleFileChange}></input>
+
                 {console.log(status)}
             </div>
 
