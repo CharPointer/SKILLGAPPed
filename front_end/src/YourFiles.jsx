@@ -16,7 +16,7 @@ function YourFiles() {
 
     async function GiveMEMYGRAAAAAPH(name) {
         try {
-            const res = await fetch('http://localhost:3000/getHTMLFile');
+            const res = await fetch('http://localhost:3000/getFileData');
     
             if (!res.ok) {
                 throw new Error(`Server responded with status: ${res.status}`);
