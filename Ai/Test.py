@@ -1,8 +1,15 @@
-from SuperGlue import Pipeline as pipes
-import os
-cwd = os.getcwd()
+import time
+import sys
 
-csv = cwd + "/UploadedFiles/Cities.csv"
-bumbuojam = cwd + "/Ai/BumbuojamFiles/Cities.bumbuojam"
+print("hello")
 
-pipes(csv,bumbuojam)
+time.sleep(5)
+
+if (sys.argv[1] == "0"):
+    raise Exception("Sorry 0") 
+
+
+if (int(sys.argv[1])%2 == 0):
+    raise Exception("Sorry, no numbers below zero") 
+
+print("Bye")
