@@ -10,10 +10,12 @@ function FileInfoPopup(props){
                 <div className="popup-Buttons">
                     <button className="upload-btn" onClick={()=>{
                                                                  props.setUpload(true)
-                                                                 props.setTrigger(false)}}>Upload!</button>
+                                                                 props.setTrigger(false)
+                                                                 props.setStatus("uploading")}}>Upload!</button>
                     <button className="close-btn" onClick={() => {
                                                                   props.setTrigger(false)
-                                                                  props.setUpload(false)}}>Cancel</button>
+                                                                  props.setUpload(false),
+                                                                  props.setStatus("error")}}>Cancel</button>
 
                 </div>
 
