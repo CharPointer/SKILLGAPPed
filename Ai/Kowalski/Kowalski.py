@@ -1,7 +1,7 @@
 """
 Kowalski's responsibilities:
     * Read files into dataframes
-    * Determine what kind of file is uploaded (file extension, maybe how well-structured it is)
+    * Determine what kind of file is uploaded
     * Convert all files to .csv or return that it's unconvertable
     * Clean the .csv file - turn strings to numerical if they should be numerical, deal with na values, etc.
     * Generate prompt for LLM
@@ -67,7 +67,7 @@ def convert_to_csv(file):
         return "unconvertable"
 # Saves .csv after cleaning
 def save_file(file, filepath):
-    with open(filepath, "w") as f:
+    with open(filepath, "w",  newline='') as f:
         f.write(file)
     return
 def clean_currency(x):

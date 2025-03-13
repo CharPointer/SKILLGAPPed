@@ -42,12 +42,10 @@ Frontend:
 React and Vite
 
 AI pipeline:
-1. python script "Kasperski" which takes dataset (csv for now) Fixes it and generates prompt for LLM
+1. python script "Kowalski" which takes dataset, fixes it and generates prompt for LLM
 
 2. LLM (using llama.cpp) which takes the prompt and generates .bumbuojam (pseudo) code for the interpreter
 
-3. python script "Interpreter" it takes the .bumbuojam code and generates valid plotly vizualizations
+3. python script "Interpreter" takes the .bumbuojam code and generates valid plotly vizualizations
 
-4. Vizual LLM checks if vizualization is good, if not we go to step 2
-
-5. server sends those vizualizations back to user
+4. server sends those vizualizations back to user
