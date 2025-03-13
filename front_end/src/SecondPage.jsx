@@ -32,8 +32,5 @@ const [htmlContent, setHtmlContent] = useState("");
   );
   }
 
-export default App
-
-  
-  export default MainPage;
+export default MainPage;
   
