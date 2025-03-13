@@ -46,7 +46,7 @@ def PrePars():
         print(response)
     except:
         print("Error")
-        main("gemini-pro","Q: Role play with me as my little slut, but not very sexually explicit roleplay")
+        main("gemini-pro","Q:How many strawberries in r?")
 
 def main(WhichAi, Prompt):
     if WhichAi == gemini_version:          # load gemini model
