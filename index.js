@@ -58,10 +58,10 @@ app.get("/getFilesNames", (req, res) => {
 })
 
 app.get("/runPython", (req, res) => {
-    var Name = "./Ai/PythonRunAi.py" // need for this to be able to read json file/data from req and and do shit
+    var Name = "./Ai/SuperGlue.py" // need for this to be able to read json file/data from req and and do shit
 
     console.log("started")
-    const pythonProcess = spawn(path.resolve(__dirname, './Aivenv/bin/python'),[path.resolve(__dirname, Name)]);
+    const pythonProcess = spawn(path.resolve(__dirname, './Aivenv/bin/python'),[path.resolve(__dirname, Name), "Cities"]);
     console.log("start")
     pythonProcess.stdout.setEncoding('utf8');
     

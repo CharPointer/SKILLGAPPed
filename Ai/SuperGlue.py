@@ -2,7 +2,15 @@ import subprocess
 import webbrowser
 import sys
 from google import genai
-API_KEY = 'AIzaSyDDlvzdRBfFmZpP0aXGoGxzXzq3oj-dUvE'
+import json
+import os
+
+
+cwd = os.getcwd()
+with open(cwd + '/Ai/api.json') as f:
+    Api = json.load(f)
+
+API_KEY = Api["Gemini"]
 
 client = genai.Client(api_key=API_KEY)
 
@@ -50,12 +58,23 @@ def run_interpreter(data_bumbuojam, csv_file_path):
     return interpreter_output
 
 def Cli():
+    print(sys.argv)
     if len(sys.argv) != 2:
         data_csv = 'data.csv'
-    else:
-        data_csv = sys.argv[1]
+        script_path = 'script.bumbuojam'
+    elif len(sys.argv) == 2:
+        cwd = os.getcwd()
 
-    script_path = 'script.bumbuojam'
+        Name = sys.argv[1]
+        data_csv = cwd + f"/UploadedFiles/{Name}.csv"
+        script_path = cwd + f"/Ai/BumbuojamFiles/{Name}.bumbuojam"
+        Html = cwd + f"/Ai/VizualizationFiles/{Name}.html"
+    else:
+        NameCSV = sys.argv[1]
+        NameScript = sys.argv[2]
+        NameHtml = sys.argv[3]
+        
+
 
     main(data_csv, script_path)
 
@@ -82,7 +101,7 @@ def main(data_csv, script_path):
         plot_html_path = interpreter_output.split('\n')[0]
         plot_png_path = interpreter_output.split('\n')[1]
 
-        webbrowser.open(plot_html_path)
+        # webbrowser.open(plot_html_path)
         
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -90,4 +109,4 @@ def main(data_csv, script_path):
     
 
 if __name__ == "__main__":
-    main()
+    Cli()

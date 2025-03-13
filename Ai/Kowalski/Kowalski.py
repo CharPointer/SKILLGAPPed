@@ -327,9 +327,14 @@ def main():
 
     input_extension = get_extension(data_filepath)
 
+    import os
+    cwd = os.getcwd()
+
+    name = data_filepath.split(".")[-2].split("/")[-1]
+
     # Returned paths
-    cleaned_csv_filepath = data_filepath.replace("." + input_extension, "_") + "cleaned_data.csv" # automatically generated
-    prompt_filepath = data_filepath.replace("." + input_extension, "_") + "prompt.txt"          # automatically generated
+    cleaned_csv_filepath = cwd + f"/Ai/CleanedData/{name}_cleaned_data.csv" # automatically generated
+    prompt_filepath = cwd + f"/Ai/CleanedData/{name}_prompt.txt"          # automatically generated
 
     # Read files and convert to .csv
     extension = get_extension(data_filepath)

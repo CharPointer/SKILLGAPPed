@@ -1,14 +1,13 @@
 TYPE:SCATTERPLOT
-TITLE:"City Latitude vs. Population, Colored by Country"
-X:latitude
-X_name:Latitude
-Y:population
-Y_name:Population
+TITLE:"City Latitude vs. Longitude Colored by Population"
+X:longitude
+X_name:Longitude
+Y:latitude
+Y_name:Latitude
 Z:null
-Z_name: null
-COLOR:country
+COLOR:population
 SIZE:null
-SCALE:null
+SCALE:viridis
 TRENDLINE:null
 NORMALIZE:null
 NBINS:null
