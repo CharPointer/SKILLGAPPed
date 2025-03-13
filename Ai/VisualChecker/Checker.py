@@ -1,42 +1,41 @@
 import sys
-import torch
+# import torch
 import base64
 import argparse
 from google import genai
-from llama_cpp import Llama
+# from llama_cpp import Llama
 import PIL.Image
 
-from llama_cpp import Llama
+# lama kodas jei kazkas sutvarkys tada veiks localy
+# from llama_cpp import Llama
 
-llm = Llama.from_pretrained(
-	repo_id="FiditeNemini/Llama-3.1-Unhinged-Vision-8B-GGUF",
-	filename="Llama-3.1-Unhinged-Vision-8B-q8_0.gguf",
-    verbose=True,
-    n_gpu_layers =-1,
-    n_ctx = 256
-)
-
-def image_to_base64_data_uri(file_path):
-    with open(file_path, "rb") as img_file:
-        base64_data = base64.b64encode(img_file.read()).decode("utf-8")
-        return f"data:image/png;base64,{base64_data}"
-
-def LamaVision_query(text_prompt, image_path):
-    image_data_uri = image_to_base64_data_uri(image_path)
-    prompt = {
-        "image": image_data_uri,
-        "text": text_prompt
-    }
-    response = llm(
-        "Q: " + prompt["text"]  + ". A: ",
-        max_tokens=256,
-        stop=["\n"],
-        echo=True
-        )
-    return response
+# llm = Llama.from_pretrained(
+# 	repo_id="FiditeNemini/Llama-3.1-Unhinged-Vision-8B-GGUF",
+# 	filename="Llama-3.1-Unhinged-Vision-8B-q8_0.gguf",
+#     verbose=True,
+#     n_gpu_layers =-1,
+#     n_ctx = 256
+# )
+# model_id = "Ai\Model\fakemodel.gguf"
+# def image_to_base64_data_uri(file_path):
+#     with open(file_path, "rb") as img_file:
+#         base64_data = base64.b64encode(img_file.read()).decode("utf-8")
+#         return f"data:image/png;base64,{base64_data}"
+# def LamaVision_query(text_prompt, image_path):
+    # image_data_uri = image_to_base64_data_uri(image_path)
+    # prompt = {
+    #     "image": image_data_uri,
+    #     "text": text_prompt
+    # }
+    # response = llm(
+    #     "Q: " + prompt["text"] + ". Photo: " + prompt["image"]  + ". A: ",
+    #     max_tokens=256,
+    #     stop=["\n"],
+    #     echo=True
+    #     )
+    # return response
 
 gemini_version = "gemini-pro"
-model_id = r"D:\Nauji reikalai\SKILLGAPPed\Ai\Model\Lama3V.gguf"#"./../Model/Lama3V.gguf"
 client = genai.Client(api_key="AIzaSyDDlvzdRBfFmZpP0aXGoGxzXzq3oj-dUvE")
 
 def gemini_query(prompt, image):      
@@ -58,15 +57,15 @@ def PrePars():
         print(response)
     except:
         print("Error")
-        main("lama","check","Ai\VisualChecker\Graph.jpg")
+        main("gemini-pro","check","Ai\VisualChecker\Graph.jpg")
 
 def main(WhichAi, Prompt, PhotoPath):
     if WhichAi == gemini_version:          # load gemini model
-        response = gemini_query(Prompt, PIL.Image.open())      # get gemini response
+        response = gemini_query(Prompt, PIL.Image.open(PhotoPath))      # get gemini response
+        print(response.text)
     elif WhichAi == "lama":
-         print("check lama")
-         response = LamaVision_query(Prompt, PhotoPath)      # get lama response
-         print(response)
+        #  response = LamaVision_query(Prompt, PhotoPath)      # get lama response
+        print(response)
     else:
         return "Error: Unsupported AI model."
     return response
