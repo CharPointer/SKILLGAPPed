@@ -130,7 +130,12 @@ hr{
   justify-content: center;
   align-items:center;
 }
+.YourFiles-Buttons{
 
+}
+.GetFileNames-btn{
+  
+}
 .popup-inner{
   position:relative;
   padding:32px;
