@@ -43,7 +43,7 @@ function UploadFile(){
             const fileType =uploadedFile.name.split('.').pop().toLowerCase();
 
             if (supportedFileType.includes(fileType)) {
-                
+
                 setStatus("idle"); // Reset status before setting the new file
                 setErrorConst(false); // Hide error popup immediately
                 setSuccessConst(false);
@@ -74,7 +74,6 @@ function UploadFile(){
             setUploadingConst(false);
             setSuccessConst(true);
             
-            setFile(null);
             fileInputRef.current.value = "";
             setUpload(false);
 
@@ -113,13 +112,13 @@ function UploadFile(){
                     setStatus={setStatus}
                     />
                 )}
-                {file&&status==="error"&&(
+                {status==="error"&&(
                     <OtherPopups trigger={errorConst} setTrigger={setErrorConst} setStatus={setStatus} Type="error"/>
                 )}
-                {file&&status==="success"&&(
+                {status==="success"&&(
                     <OtherPopups trigger={successConst} setTrigger={setSuccessConst}setStatus={setStatus} Type="success"/>
                 )}
-                {file&&status==="uploading"&&(
+                {status==="uploading"&&(
                     <OtherPopups trigger={uploadingConst} setTrigger={setUploadingConst} setStatus={setStatus} Type="uploading"/>
                 )}
                 
