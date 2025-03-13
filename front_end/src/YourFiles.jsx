@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import ShowPlot from "./ShowPlot.jsx";
 
 function YourFiles() {
     const [files, setFiles] = useState([]); 
-
+    const [htmlContent, setHtmlContent]=useState("");
     async function fetchData() {
         try {
             const res = await (await fetch('http://localhost:3000/getFilesNames')).json();
@@ -15,29 +16,21 @@ function YourFiles() {
 
     async function GiveMEMYGRAAAAAPH(name) {
         try {
-            const data = {
-                "FileName": name,
-                "Location": ""
-            };
-            const res = await fetch('http://localhost:3000/getFileData', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json" // Important for JSON data
-                },
-                body: JSON.stringify(data)
-            });
+            const res = await fetch('http://localhost:3000/getHTMLFile');
     
             if (!res.ok) {
                 throw new Error(`Server responded with status: ${res.status}`);
             }
     
-            const responseData = await res.json(); // Assuming the server returns JSON
-            console.log("Response:", responseData);
-            return responseData;
-    
-        } catch (error) {
-            console.error("Failed to get file data from API:", error);
+            const html = await res.text(); 
+            setHtmlContent(html);
+
+            ShowPlot(htmlContent);
+        } 
+        catch (error) {
+            console.error("Failed to fetch HTML file:", error);
         }
+
     }
     
 
@@ -53,13 +46,14 @@ function YourFiles() {
                 <div className="YourFiles-Buttons">
                     {files.length > 0 ? (
                         files.map(name => (
-                            <button key={name} className="GetFileNames-btn" onClick={()=>GiveMEMYGRAAAAAPH({name})}>{name}</button>
+                            <button key={name} className="GetFileNames-btn" onClick={()=>GiveMEMYGRAAAAAPH(name)}>{name}</button>
                         ))
                     ) : (
                         <p>Loading files...</p>
                     )}
                 </div>
             </div>
+            <ShowPlot htmlContent={htmlContent} />
         </div>
     );
 }
