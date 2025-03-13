@@ -1,29 +1,27 @@
-import NavBar from "./NavBar.jsx";
-import ShowPlot from "./ShowPlot.jsx";
-import UploadFile from "./UploadFile.jsx";
-import React,{useEffect} from 'react';
-import YourFiles from './YourFiles.jsx';
+
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./Home";   // First page (landing)
+import MainPage from "./MainPage"; // Second page (plot visualization)
+
 
 function App() {
-  useEffect(()=>{
-    document.title="skillGAPped";
-  },[]);
+  useEffect(() => {
+    document.title = "skillGAPped";
+  }, []);
 
-  return(
-    <>
-      <div className="App-background">
-        <NavBar/>
-        <YourFiles/>
-        <div>
-          <ShowPlot/>
-          <div className="UltraCoolButtons">
-            <UploadFile/>
-          </div>
-        </div>
-      </div>
-    </>
 
+  return (
+    <Router>
+      <Routes>
+        {/* Home page (First Page) */}
+        <Route path="/" element={<Home />} />
+
+        {/* Main page (Second Page) */}
+        <Route path="/main" element={<MainPage />} />
+      </Routes>
+    </Router>
   );
-  }
+}
 
-export default App
+export default App;
