@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ShowPlot from "./ShowPlot.jsx";
 
-function YourFiles() {
+function YourFiles({ setHtmlContent }) {
+
     const [files, setFiles] = useState([]); 
-    const [htmlContent, setHtmlContent]=useState("");
+
     async function fetchData() {
         try {
             const res = await (await fetch('http://localhost:3000/getFilesNames')).json();
@@ -16,16 +17,26 @@ function YourFiles() {
 
     async function GiveMEMYGRAAAAAPH(name) {
         try {
-            const res = await fetch('http://localhost:3000/getFileData');
-    
+            const data=
+            {
+                "FileName": name, // example1.html is REQUIRED file to be fetched from BACKEND to CLIENT
+                "Location": "" //PASS empty string
+            }
+            
+            const res = await fetch('http://localhost:3000/getFileData',{
+                method: 'POST',  // Use POST to send data in the body
+                headers: {
+                  'Content-Type': 'application/json',  // Specify the content type as JSON
+                },
+                body: JSON.stringify(data),  // Convert the JavaScript object to a JSON string
+              });
+
             if (!res.ok) {
                 throw new Error(`Server responded with status: ${res.status}`);
             }
     
             const html = await res.text(); 
             setHtmlContent(html);
-
-            ShowPlot(htmlContent);
         } 
         catch (error) {
             console.error("Failed to fetch HTML file:", error);
@@ -49,11 +60,10 @@ function YourFiles() {
                             <button key={name} className="GetFileNames-btn" onClick={()=>GiveMEMYGRAAAAAPH(name)}>{name}</button>
                         ))
                     ) : (
-                        <p>Loading files...</p>
+                        <p></p>
                     )}
                 </div>
             </div>
-            <ShowPlot htmlContent={htmlContent} />
         </div>
     );
 }
