@@ -42,29 +42,6 @@ app.use(function (req, res, next) {
 var IsProcessRunning = false;
 var ConversionQueue = [];
 
-function RunScript(file) {
-    var Name = "./Ai/SuperGlue.py" // need for this to be able to read json file/data from req and and do shit
-
-    console.log("started on " + file + " convertion!")
-    const pythonProcess = spawn(path.resolve(__dirname, './Aivenv/bin/python'),[path.resolve(__dirname, Name), file]);
-    pythonProcess.stdout.setEncoding('utf8');
-    
-    pythonProcess.stdout.on('data', (data) => {
-        console.log(data)
-    });
-
-    pythonProcess.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
-        console.log(file + " exited unsussesfull");
-        return 0;
-    });
-
-    pythonProcess.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
-        console.log(file + " success");
-        return 1;
-    });
-}
 async function RunScriptTest(file) {
     return new Promise((resolve, reject) => {
         var Name = "./Ai/SuperGlue.py" // need for this to be able to read json file/data from req and and do shit
@@ -87,7 +64,7 @@ async function RunScriptTest(file) {
             console.log(`Child process exited with code ${code}`);
             if (code === 0) {
                 console.log(file + " success");
-                resolve(1); // Resolve when successful2
+                resolve(1); // Resolve when successful
             } else {
                 console.log(file + " failed with code " + code);
                 resolve(0); // Reject if exit code is non-zero
@@ -214,6 +191,14 @@ app.post("/fileupload", (req,res) => {
             var oldName = files.filetoupload[0].originalFilename;
             console.log(files.filetoupload[0].filepath)
             var newpath = path.resolve(UploadPath,oldName);
+            fs.unlink(newpath, () => {
+                if (err) {
+                    console.log("There was error trying to delete file: "+err)
+                }else {
+                    console.log("File was succesfully deleted")
+                }
+            });
+
             fs.copyFile(oldpath, newpath, fs.constants.COPYFILE_EXCL, function (err) {
               if (err) {
                 console.log("Same file egzist");
