@@ -1,0 +1,16 @@
+TYPE:SCATTERPLOT
+TITLE:"City Latitude vs. Longitude Colored by Population"
+X:longitude
+X_name:Longitude
+Y:latitude
+Y_name:Latitude
+Z:null
+COLOR:population
+SIZE:null
+SCALE:viridis
+TRENDLINE:null
+NORMALIZE:null
+NBINS:null
+POINTS:null
+BOXLINE:null
+BARMODE:null

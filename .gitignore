@@ -175,3 +175,15 @@ node_modules/
 UploadedFiles/*
 Ai/Model/**
 !Ai/Model/fakemodel.gguf
+Ai/api.key
+
+
+Ai/BumbuojamFiles/**
+!Ai/BumbuojamFiles/bumbuojam.bumbuojam
+
+
+Ai/CleanedData/**
+!Ai/CleanedData/example.txt
+
+Ai/VizualizationFiles/**
+!Ai/VizualizationFiles/example.html

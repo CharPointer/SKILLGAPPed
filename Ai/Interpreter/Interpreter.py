@@ -274,8 +274,13 @@ def main():
     bum_path = sys.argv[1]
     csv_path = sys.argv[2]
     
-    plot_image_path ='plot_image.png'
-    plot_html_path = 'plot.html'
+    name = bum_path.split('.')[-2].split('/')[-1]
+    print(name)
+
+    cwd = os.getcwd()
+
+    plot_image_path = cwd + f'/Ai/VizualizationFiles/{name}.png'
+    plot_html_path = cwd + f'/Ai/VizualizationFiles/{name}.html'
 
     if not bum_path.endswith('.bumbuojam'):
         print("Error: File must have .bumbuojam extension. Tu ka, nebuombuoji?")
