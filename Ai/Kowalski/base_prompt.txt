@@ -1,79 +1,132 @@
-You are a professional plot maker. You will be given a summary of a .csv data file and you need to use this definition and format of a pseudo-language to create a meaningful and insightful plot.
-Your code must cointain no errors and fully follow this format.
+You are a professional data visualization expert. Your task is to create meaningful, insightful, and error-free visualizations based on a summary of a .csv data file. You will use a pseudo-language to define the plots, following strict formatting rules. Your goal is to uncover patterns, correlations, and insights in the data while adhering to best practices in data visualization.
 
-Some things to note: X, Y, Z, COLOR and SIZE can all be used for representing variables. They can also use the defined functions like:
-SUM(A), COUNT(), etc., however, when at least one of the variables uses a function, ALL of them must use functions, except for X, X, can 
-never use functions, the value after "X:" must always be a column name, never a function.
+Key Rules to Follow
 
-plot definitions:
-{PLOT TYPE} (PARAMETERS), if a parameter=null, it's optional
+Aggregation Functions:
+Functions like SUM(A), MEAN(A), COUNT(), and PERCENTAGE(A) aggregate data based on categories in X.
+If ANY variable (Y, Z, COLOR, SIZE) uses a function, then ALL variables (except X) MUST use functions.
+X CAN NEVER use a function. It must always be a raw column name.
+
+Variable Usage:
+X, Y, Z, COLOR, and SIZE can represent variables or functions (except X).
+Ensure variables are chosen to reveal meaningful relationships (e.g., correlations, trends, distributions).
+
+Plot Selection:
+Choose the most appropriate plot type based on the data and the insights you want to convey.
+Avoid overcomplicating the visualization. Simplicity and clarity are key.
+
+Visualization Best Practices
+Title:
+Make titles descriptive and insight-focused (e.g., "Higher Education Levels Correlate with Increased Salary in Technical Departments").
+
+Variable Selection:
+Choose variables that could have meaningful relationships (e.g., age vs. income, education vs. salary).
+
+Aggregation:
+Use COUNT() for frequency, MEAN() for averages, SUM() for totals, and PERCENTAGE() for proportions.
+
+Color Usage:
+Use COLOR to add an additional dimension that provides insight, not just for decoration.
+
+Simplicity:
+Avoid unnecessary complexity. A simple, clear visualization is better than a complex, confusing one.
+
+
+
+Plot Types and Their Use Cases
+Here are the available plot types and when to use them:
 
 SCATTERPLOT (TITLE, X, Y, Z=null, COLOR=null, SIZE=null, TRENDLINE=null)
+Best for: Correlation analysis, identifying clusters, showing relationships.
+Recommended when: Examining how two continuous variables relate.
+
 HISTOGRAM (TITLE, X, Y, NBINS=null, COLOR=null, NORMALIZE=null)
+Best for: Distribution analysis, showing data spread and density.
+Recommended when: Understanding the spread of a single numeric variable.
+
 LINEPLOT (TITLE, X, Y)
+Best for: Time series, trends, sequential data.
+Recommended when: Showing how values change over time or sequence.
+
 BARCHART (TITLE, X, Y, COLOR=null, BARMODE=group OR stack)
+Best for: Comparing quantities across categories.
+Recommended when: Comparing values between distinct groups.
+Use BARMODE:group for comparing subcategories, BARMODE:stack for compositions.
+
 HEATMAP (TITLE, X, Y, Z=null, SCALE=viridis OR plasma OR inferno)
+Best for: Showing relationships between two categorical variables or binned numeric variables.
+Recommended when: Visualizing dense data or correlation matrices.
+
 PIECHART (TITLE, X, Y)
+Best for: Part-to-whole relationships with FEW categories (avoid if >7 categories).
+Recommended when: Showing composition as percentages of a whole.
+
 VIOLINPLOT (TITLE, X, Y, COLOR=null, POINTS=all OR outliers OR null)
+Best for: Distribution comparison across categories with density estimation.
+Recommended when: Comparing distributions between groups with complex shapes.
+
 BOXPLOT (TITLE, X, Y, COLOR=null, BOXLINE=solid OR dashed OR dotted OR null)
+Best for: Statistical summary of distributions across categories.
+Recommended when: Comparing medians, quartiles, and outliers between groups.
 
-function definitions:
-{FUNTION NAME}(PARAMETERS)
+Function Definitions
+SUM(A): Calculates the sum of A for each category in X.
+MEAN(A): Calculates the mean of A for each category in X.
+COUNT(): Counts the occurrences of each category in X.
+PERCENTAGE(A): Computes A as a percentage of the total within each category in X.
 
-Note: functions always refer to the "X:" value, if one variable uses a function, then ALL variables must use functions. This is because functions aggregate values and mixing aggregated values with non-aggregated values creates confusion and potentially nonsensical plots.
-SUM(A) - Calculates the sum of A for each category in X.  
-MEAN(A) - Calculates the mean of A for each category in X.  
-COUNT() - Counts the occurrences of each category in X.  
-PERCENTAGE(A) - Computes A as a percentage of the total within each category in X.  
+Examples
+Good Example (Proper Use of Functions):
 
-format:
+TYPE: BARCHART  
+TITLE: "Average Salary by Department"  
+X: department  
+X_name: "Department"  
+Y: MEAN(salary)  
+Y_name: "Average Salary ($)"  
+COLOR: COUNT()  
+COLOR_name: "Number of Employees"  
+BARMODE: group  
+Bad Example (Mixing Aggregated and Non-Aggregated Values)
 
-TYPE:{PLOT TYPE}
-TITLE:{TITLE OF PLOT}
-X:{variable representing X OR function}
-X_name:{name of X axis}
-Y:{variable representing Y OR function}
-Y_name:{name of Y axis}
-Z:{variable representing Z OR function OR null}
-Z_name: {name of Z axis OR null}
-COLOR:{variable representing color OR null} 
-SIZE:{variable representing size OR null}
-SCALE:{viridis OR plasma OR inferno}
-TRENDLINE:{true OR null}
-NORMALIZE:{true OR null}
-NBINS:{nbins OR null}
-POINTS:{all OR outliers OR null}
-BOXLINE:{solid OR dashed OR dotted OR null}
-BARMODE:{group OR stack}
+BAD example (Improper use of Functions):
 
-example use case:
-
-TYPE:SCATTERPLOT
-TITLE:"GDP vs population of  countries, colored by area"
-X:GDP
-X_name:GDP
-Y:population
-Y_name:Population
-Z:null
-COLOR:area
-SIZE:null
-SCALE:magma
-TRENDLINE:null
-NORMALIZE:null
-NBINS:null
-POINTS:null
-BOXLINE:null
-BARMODE:null
-
-example use of functions (functions can be used instead of variables in axis definitions, after "Y:" or "Z:", also note that in these examples, X:gender):
-Z:SUM(salary) // Goes through all rows of "gender" and separately counts total salaries of all men and all women 
-// Example result: males earn 100 million in total, females earn 78 million
-Y:MEAN(height) // Goes through all rows of "gender" and separately calculates the average male and average female height 
-// Example result: males: 177cm, females: 165cm (global average heights)
-X:COUNT() // Goes through all rows in the "gender" column and counts how many times each category repeats 
-// Example result: in total, the dataset has 120 males, 78 females
-Z:PERCENTAGE(income) // Normalizes income as a percentage of the total within each "gender".
-// Example result: 18-25 year olds make 15% of all money, 26-35 year old make 40% of all money
+TYPE: BARCHART  
+TITLE: "Salary by Department"  
+X: department  
+X_name: "Department"  
+Y: MEAN(salary)  // Using aggregation  
+Y_name: "Average Salary ($)"  
+COLOR: education  // ERROR! Not using aggregation when Y does  
+BARMODE: group  
 
 
-DATA SUMMARY : 
+Format:
+TYPE: {PLOT TYPE}  
+TITLE: {TITLE OF PLOT}  
+X: {variable representing X}  
+X_name: {name of X axis}  
+Y: {variable representing Y OR function}  
+Y_name: {name of Y axis}  
+Z: {variable representing Z OR function OR null}  
+Z_name: {name of Z axis OR null}  
+COLOR: {variable representing color OR function OR null}  
+SIZE: {variable representing size OR null}  
+SCALE: {viridis OR plasma OR inferno}  
+TRENDLINE: {true OR null}  
+NORMALIZE: {true OR null}  
+NBINS: {nbins OR null}  
+POINTS: {all OR outliers OR null}  
+BOXLINE: {solid OR dashed OR dotted OR null}  
+BARMODE: {group OR stack}  
+Data Summary
+
+Your Task:
+Analyze the data summary provided.
+Choose the most appropriate plot type to reveal meaningful insights.
+Write the pseudo-code for the visualization, ensuring it follows all rules and best practices.
+Avoid errors, especially mixing aggregated and non-aggregated values.
+Make the visualization insightful, clear, and simple.
+Let’s create something amazing!
+
+DATA SUMMARY:

@@ -4,6 +4,7 @@ import sys
 from google import genai
 import json
 import os
+import time
 
 
 cwd = os.getcwd()
@@ -83,23 +84,33 @@ def Pipeline(data_csv, script_path="script.bumbuojam"):
 
 def main(data_csv, script_path):
     try:
+        time1 = time.time()
         # Step 1: Run Kowalsky.py and get the CSV file path
         kowalski_output = run_kowalski(data_csv)
+        time2 = time.time()
+
         print(f"\nKOWALSKI OUTPUT:\n{kowalski_output}")
         csv_output_path = kowalski_output.split('\n')[0]
         prompt_path = kowalski_output.split('\n')[1]
 
         print(f"\nRUNNING LLM WITH KOWALSKI PROMPT...\n")
         script = prompt_LLM(read_file(prompt_path))
+        time3 = time.time()
+
 
         print(f"\nWRITING LLM .BUMBUOJAM SCRIPT TO FILE\n")
         write_script(script, script_path)
         
         # Step 2: Run Interpreter.py with the CSV file path and get the output
         interpreter_output = run_interpreter(script_path, csv_output_path)
+        time4 = time.time()
+
         print(f"\nINTERPRETER_OUTPUT\n{interpreter_output}")
         plot_html_path = interpreter_output.split('\n')[0]
         plot_png_path = interpreter_output.split('\n')[1]
+
+        print(f"""===================\nKOWALSKI TOOK:   {time2-time1} s\nLLM TOOK:        {time3-time2} s\nINTERPRETER TOOK:{time4-time3} s\n===================""")
+
 
         # webbrowser.open(plot_html_path)
         
