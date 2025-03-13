@@ -1,21 +1,34 @@
 import uploadPicture from './assets/uploadImg.png';
 import React, {useRef, useState, useEffect} from 'react'
 import FileInfoPopup from './FileInfoPopup.jsx';
-
+import OtherPopups from './OtherPopups.jsx';
 function UploadFile(){
 
     // console.log("he1lp")
 
-    const fileInputRef=useRef(null);
-    const [file, setFile] = useState(null);
-    const [status, setStatus]=useState("idle");
-    const [uploadProgress, setUploadProgress] = useState(0);
+    const fileInputRef=useRef(null); //mygtukas susiaktyvuoja (ignore)
+    const [file, setFile] = useState(null); //failas
+
+    const [status, setStatus]=useState("idle"); //idle,uploading, success,error
+
+    const [uploadProgress, setUploadProgress] = useState(0); //progress barui
+
     const [buttonPopUp,setButtonPopUp]=useState(false);
     const [upload, setUpload]=useState(false);
 
+    /*FOR POPUPS DONT CHECK IT */
+    const [errorConst, setErrorConst] = useState(false);
+    const [successConst, setSuccessConst] = useState(false)
+    const [uploadingConst, setUploadingConst] = useState(false)
+
+
+
+    const supportedFileType =["json", "csv", "txt", "xls", "xlsx",
+                                "tsv", "parquet", "xml", "html", "h5", "feather",
+                                "orc", "dta", "sav"];
+
     //opens file input, because its invis and i stupid
     function UploadThatBoi(){
-        // console.log(fileInputRef)
         if(fileInputRef.current){
             fileInputRef.current.click();
         }
@@ -29,15 +42,16 @@ function UploadFile(){
             const uploadedFile=e.target.files[0];
             const fileType =uploadedFile.name.split('.').pop().toLowerCase();
 
-            if (fileType === 'json' || fileType === 'csv') {
+            if (supportedFileType.includes(fileType)) {
                 setFile(uploadedFile);
-                setStatus("uploading");
+
                 setUploadProgress(0);
                 setButtonPopUp(true);
+                setUploadingConst(true);
             } else {
                 setFile(null); 
                 setStatus("error");
-                //Padaryti, kad issoktu kazkokia lentele 
+                setErrorConst(true);
             }
         }
     }
@@ -50,6 +64,7 @@ function UploadFile(){
             const response = await fetch("http://localhost:3000/fileupload", {
                 method: "POST",
                 body: formData, // ✅ Send FormData directly
+                
             });
     
             if (!response.ok) {
@@ -57,11 +72,14 @@ function UploadFile(){
             }
     
             setStatus("success");
+            setUploadingConst(false);
+            setSuccessConst(true);
             setUploadProgress(100);
             console.log("File uploaded successfully");
         } catch (error) {
             setStatus("error");
             setUploadProgress(0);
+            setErrorConst(true);
         }
         
     }
@@ -70,11 +88,6 @@ function UploadFile(){
             handleFileUpload(file);
         }
     }, [upload]);
-    useEffect(() => {
-        if (status==="success") {
-            
-        }
-    }, [status]);
 
     return(
         <div>
@@ -88,16 +101,17 @@ function UploadFile(){
                     type={file.type}
                     setTrigger={setButtonPopUp}
                     setUpload={setUpload}
-                />
+                    setStatus={setStatus}
+                    />
                 )}
                 {file&&status==="error"&&(
-                    <p>ERRROOORRAS</p>
+                    <OtherPopups trigger={errorConst} setTrigger={setErrorConst} setStatus={setStatus} Type="error"/>
                 )}
                 {file&&status==="success"&&(
-                    <p>pavyko</p>
+                    <OtherPopups trigger={successConst} setTrigger={setSuccessConst}setStatus={setStatus} Type="success"/>
                 )}
-                    {file&&status==="uploading"&&(
-                    <p>krauna</p>
+                {file&&status==="uploading"&&(
+                    <OtherPopups trigger={uploadingConst} setTrigger={setUploadingConst} setStatus={setStatus} Type="uploading"/>
                 )}
                 
             </div>
@@ -106,6 +120,7 @@ function UploadFile(){
                 <p className="UploadFileText">Upload your file! </p>
                 <img src={uploadPicture} alt="UploadImg"></img>
                 <input title="" placeholder="" type="file"ref={fileInputRef}style={{display: "none"}} onChange={HandleFileChange}></input>
+                {console.log(status)}
             </div>
 
         </div>
