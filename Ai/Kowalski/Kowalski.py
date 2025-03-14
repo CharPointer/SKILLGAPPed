@@ -13,7 +13,6 @@ Kowalski's responsibilities:
 """
 import pandas as pd
 import re
-import csv
 import sys
 
 import os 
@@ -88,75 +87,8 @@ def clean_percentage(x):
         except:
             return x
     return x
-# Cleans dataframe (converts currency and percentage strings to numbers, fills NaN values)
+    
 def clean_dataframe(df):
-    """
-    Clean the DataFrame by:
-    - Converting currency strings to numeric
-    - Converting percentage strings to numeric
-    - Handling NaN values
-    """
-    try:
-        # Make a copy to avoid modifying the original
-        df_clean = df.copy()
-        
-        # Process each column
-        for col in df_clean.columns:
-            try:
-                # Skip if column is empty
-                if df_clean[col].isna().all():
-                    continue
-                
-                # Get non-NA string values for pattern detection
-                sample_values = df_clean[col].dropna().astype(str)
-                
-                # Skip if no values to process
-                if len(sample_values) == 0:
-                    continue
-                
-                # Check for currency pattern
-                if sample_values.str.contains(r'^\s*[$£€¥]').any() or sample_values.str.contains(r',\d{3}').any():
-                    df_clean[col] = df_clean[col].apply(clean_currency)
-                    
-                # Check for percentage pattern
-                elif sample_values.str.contains('%').any():
-                    df_clean[col] = df_clean[col].apply(clean_percentage)
-                
-                # Try to convert to numeric if possible
-                if not pd.api.types.is_numeric_dtype(df_clean[col]):
-                    try:
-                        numeric_col = pd.to_numeric(df_clean[col], errors='coerce')
-                        # If most values convert successfully, use numeric version
-                        if numeric_col.notna().sum() > df_clean[col].notna().sum() * 0.8:
-                            df_clean[col] = numeric_col
-                    except:
-                        pass
-            except Exception as e:
-                # If any column processing fails, just keep the original column
-                print(f"Could not process column {col}: {str(e)}")
-                continue
-        
-        # Basic NA handling - fill numeric with 0, others with 'Unknown'
-        for col in df_clean.columns:
-            try:
-                if df_clean[col].isna().any():
-                    if pd.api.types.is_numeric_dtype(df_clean[col]):
-                        df_clean[col] = df_clean[col].fillna(0)
-                    else:
-                        df_clean[col] = df_clean[col].fillna('Unknown')
-            except:
-                # If filling fails, just continue
-                continue
-                
-        return df_clean
-    
-    except Exception as e:
-        print(f"Error in clean_dataframe: {str(e)}")
-        # If cleaning fails, return original dataframe
-        return df
-    
-# Deepseek's implementation of the clean_dataframe function, no time to check this, but it may be better than default
-def clean_dataframe_deepseek(df):
     """
     Clean the DataFrame by:
     - Converting currency strings to numeric
@@ -244,9 +176,7 @@ def clean_dataframe_deepseek(df):
 
 # Creates summary of clean dataframe (or .csv, same thing basically)
 def summarize_dataframe(df):
-    """
-    Generate a simple summary of the DataFrame.
-    """
+    """Generate a focused summary of the DataFrame for plotting."""
     try:
         summary = []
         
@@ -254,58 +184,73 @@ def summarize_dataframe(df):
         summary.append(f"Dataset Overview:")
         summary.append(f"- Total rows: {df.shape[0]}")
         summary.append(f"- Total columns: {df.shape[1]}")
+        
+        # Add only the most significant correlations
+        numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
+        if len(numeric_cols) >= 2:
+            corr_matrix = df[numeric_cols].corr().round(2)
+            # Find top 3 strongest correlations only
+            corr_pairs = []
+            for i in range(len(numeric_cols)):
+                for j in range(i+1, len(numeric_cols)):
+                    col1, col2 = numeric_cols[i], numeric_cols[j]
+                    corr = corr_matrix.loc[col1, col2]
+                    if abs(corr) > 0.5:  # Only include meaningful correlations
+                        corr_pairs.append((col1, col2, corr))
+            
+            if corr_pairs:
+                top_pairs = sorted(corr_pairs, key=lambda x: abs(x[2]), reverse=True)[:3]
+                summary.append("\nStrong correlations:")
+                for col1, col2, corr in top_pairs:
+                    summary.append(f"- {col1} and {col2}: {corr:.2f}")
+        
         summary.append("\nColumn Analysis:")
         
-        # Analyze each column
+        # Analyze each column with focused statistics
         for col in df.columns:
             try:
                 summary.append(f"\n## Column: {col}")
-                
-                # Data type
                 dtype = df[col].dtype
                 summary.append(f"- Data type: {dtype}")
                 
                 # Missing values
                 missing = df[col].isna().sum()
-                missing_percent = (missing / len(df)) * 100 if len(df) > 0 else 0
-                summary.append(f"- Missing values: {missing} ({missing_percent:.2f}%)")
+                if missing > 0:
+                    missing_percent = (missing / len(df)) * 100
+                    summary.append(f"- Missing values: {missing} ({missing_percent:.1f}%)")
                 
-                # Skip empty columns
-                if missing == len(df):
-                    summary.append("- Column is empty")
-                    continue
-                
-                # For numeric columns, add basic stats
+                # For numeric columns, add only key stats
                 if pd.api.types.is_numeric_dtype(df[col]):
                     try:
-                        summary.append(f"- Min: {df[col].min()}")
-                        summary.append(f"- Max: {df[col].max()}")
-                        summary.append(f"- Mean: {df[col].mean():.2f}")
-                    except:
-                        summary.append("- Could not calculate numeric statistics")
-                
-                # For other columns, show unique values count
-                else:
-                    try:
-                        unique_count = df[col].nunique()
-                        summary.append(f"- Unique values: {unique_count}")
+                        summary.append(f"- Range: {df[col].min()} to {df[col].max()}")
+                        summary.append(f"- Mean: {df[col].mean():.2f}, Median: {df[col].median():.2f}")
                         
-                        # If few unique values, show distribution
-                        if 0 < unique_count <= 5:
-                            summary.append("- Value distribution:")
-                            value_counts = df[col].value_counts().nlargest(5)
-                            for value, count in value_counts.items():
-                                percent = (count / df[col].count()) * 100 if df[col].count() > 0 else 0
-                                summary.append(f"  * {value}: {count} ({percent:.2f}%)")
+                        # Only add distribution hint if it seems important
+                        if abs(df[col].skew()) > 1:
+                            summary.append(f"- Note: Distribution is skewed ({df[col].skew():.1f})")
                     except:
-                        summary.append("- Could not analyze categorical values")
-            
+                        pass
+                
+                # For datetime columns - just range
+                elif pd.api.types.is_datetime64_dtype(df[col]):
+                    summary.append(f"- Date range: {df[col].min().date()} to {df[col].max().date()}")
+                
+                # For categorical, focus on dominance
+                elif df[col].dtype == 'object':
+                    unique_count = df[col].nunique()
+                    summary.append(f"- Unique values: {unique_count}")
+                    
+                    # Only show distribution if there's a clear dominant category
+                    if 0 < unique_count <= 10:
+                        top_value = df[col].value_counts().nlargest(1)
+                        top_pct = (top_value.iloc[0] / df[col].count()) * 100
+                        if top_pct > 50:
+                            summary.append(f"- Dominant value: {top_value.index[0]} ({top_pct:.1f}%)")
+                    
             except Exception as e:
-                summary.append(f"- Error analyzing column: {str(e)}")
                 continue
         
     except Exception as e:
-        print(f"Error in summarize_dataframe: {str(e)}")
         return "Could not generate summary due to an error."
 
     return "\n".join(summary)
@@ -342,7 +287,7 @@ def main():
     base_prompt = read_file(base_prompt_filepath)
 
     # Clean files and save them
-    cleaned_file = clean_dataframe_deepseek(file)
+    cleaned_file = clean_dataframe(file)
     file_summary = summarize_dataframe(cleaned_file)
     save_file(convert_to_csv(cleaned_file), cleaned_csv_filepath)
 
