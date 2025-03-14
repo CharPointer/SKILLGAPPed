@@ -13,8 +13,8 @@ const UploadPath = path.resolve(__dirname, 'UploadedFiles'); // ON GAWDS LIFE US
 const port = 3000;
 
 app.set("view engine", "ejs");
+// app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, 'front_end', 'dist')));
-app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -129,6 +129,10 @@ app.get("/old", (req, res) => {
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'front_end', 'dist', 'index.html'));
+});
+
+app.get('/main', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get("/getFilesNames", (req, res) => {

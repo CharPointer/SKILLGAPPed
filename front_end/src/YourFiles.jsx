@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ShowPlot from "./ShowPlot.jsx";
 
-function YourFiles({ setHtmlContent }) {
+function YourFiles({ SetHtmlContent }) {
 
     const [files, setFiles] = useState([]); 
 
@@ -36,7 +36,8 @@ function YourFiles({ setHtmlContent }) {
             }
     
             const html = await res.text(); 
-            setHtmlContent(html);
+            SetHtmlContent(html);
+            console.log(html)
         } 
         catch (error) {
             console.error("Failed to fetch HTML file:", error);
