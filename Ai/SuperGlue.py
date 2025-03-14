@@ -2,6 +2,7 @@ import subprocess
 import webbrowser
 import sys
 from google import genai
+from PythonAi_Sigma import main as LLMgen
 import json
 import os
 import time
@@ -19,12 +20,11 @@ API_KEY = Api["Gemini"]
 client = genai.Client(api_key=API_KEY)
 
 def prompt_LLM(prompt):
-    response = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=prompt,
-    )
-    print(f"\nLLM RESPONSE:\n{response.text}")
-    return response.text
+
+    response = LLMgen("gemini", prompt)
+
+    print(f"\nLLM RESPONSE:\n{response}")
+    return response
 
 def read_file(filepath):
     """Reads the contents of a file and returns it as a string."""

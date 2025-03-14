@@ -1,17 +1,24 @@
-TYPE:SCATTERPLOT
-TITLE:"City Latitude vs. Longitude, Colored by Population"
-X:longitude
-X_name:Longitude
-Y:latitude
-Y_name:Latitude
-Z:null
-Z_name:null
-COLOR:population
-SIZE:null
-SCALE:viridis
-TRENDLINE:null
-NORMALIZE:null
-NBINS:null
-POINTS:null
-BOXLINE:null
-BARMODE:null
+Based on the data summary, I will create a visualization that reveals meaningful insights.
+
+**Plot Selection:**
+Given the large number of unique cities (43009) and the fact that we want to understand the distribution of population across different cities, I will choose a **HISTOGRAM** plot type.
+
+**Pseudo-Code:**
+```markdown
+TYPE: HISTOGRAM
+TITLE: "Population Distribution Across Cities"
+X: population
+X_name: "Population"
+Y: COUNT()
+Y_name: "Frequency"
+NBINS: 50
+NORMALIZE: true
+```
+**Explanation:**
+
+* We use a histogram to visualize the distribution of population across different cities.
+* The x-axis represents the population, and the y-axis represents the frequency of each population value.
+* We use 50 bins to ensure a good balance between detail and simplicity.
+* We normalize the histogram to show the proportion of each population value.
+
+This visualization will provide insight into the distribution of population across different cities, allowing us to understand which population ranges are most common and how they are distributed.
