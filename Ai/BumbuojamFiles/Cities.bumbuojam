@@ -1,24 +1,13 @@
-Based on the data summary, I will create a visualization that reveals meaningful insights.
+Okay, I've reviewed the data summary.  I think the most interesting relationships to explore here are related to the population distribution across different countries. Let's use a bar chart to visualize the average population for each country.
 
-**Plot Selection:**
-Given the large number of unique cities (43009) and the fact that we want to understand the distribution of population across different cities, I will choose a **HISTOGRAM** plot type.
-
-**Pseudo-Code:**
-```markdown
-TYPE: HISTOGRAM
-TITLE: "Population Distribution Across Cities"
-X: population
-X_name: "Population"
-Y: COUNT()
-Y_name: "Frequency"
-NBINS: 50
-NORMALIZE: true
 ```
-**Explanation:**
-
-* We use a histogram to visualize the distribution of population across different cities.
-* The x-axis represents the population, and the y-axis represents the frequency of each population value.
-* We use 50 bins to ensure a good balance between detail and simplicity.
-* We normalize the histogram to show the proportion of each population value.
-
-This visualization will provide insight into the distribution of population across different cities, allowing us to understand which population ranges are most common and how they are distributed.
+TYPE: BARCHART
+TITLE: "Average Population by Country"
+X: country
+X_name: "Country"
+Y: MEAN(population)
+Y_name: "Average Population"
+COLOR: COUNT()
+COLOR_name: "Number of Cities"
+BARMODE: group
+```
