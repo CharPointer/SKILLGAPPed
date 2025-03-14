@@ -121,6 +121,11 @@ BOXLINE: {solid OR dashed OR dotted OR null}
 BARMODE: {group OR stack}  
 Data Summary
 
+Things to ensure:
+1. If even one of the variables (Y,Z,COLOR,SIZE) uses a function rather than a column name, ALL variables must use functions (except X);
+2. In a SCATTERPLOT, only use TREADLINE if all X,Y or Z take numerical, not categorical values;
+3. If you are unsure, prefer to NOT use functions, or use ONLY functions, to re-iterate.
+
 Your Task:
 Analyze the data summary provided.
 Choose the most appropriate plot type to reveal meaningful insights.

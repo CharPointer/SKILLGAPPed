@@ -10,7 +10,7 @@ function ShowPlot({ HtmlContent }){
                     style={{ width: "100%", height: "500px", border: "none" }}
                     srcDoc={HtmlContent} // Use srcDoc to insert the HTML
                 />
-                
+
             </div>
         </div>
     );
