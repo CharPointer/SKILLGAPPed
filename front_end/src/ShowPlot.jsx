@@ -1,13 +1,12 @@
 
-function ShowPlot(props){
+function ShowPlot({ htmlContent }){
 
     return(
         <div className="ShowPlot-body">
             <h1>Your data</h1>
             <hr></hr>
             <div>
-                {props&&props}
-                <div dangerouslySetInnerHTML={{ __html: props.htmlContent }} />
+                {htmlContent && <div dangerouslySetInnerHTML={{ __html: htmlContent }} />}
             </div>
         </div>
     );

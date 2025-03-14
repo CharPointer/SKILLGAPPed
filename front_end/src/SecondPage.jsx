@@ -1,29 +1,36 @@
 import NavBar from "./NavBar.jsx";
 import ShowPlot from "./ShowPlot.jsx";
 import UploadFile from "./UploadFile.jsx";
-import GeneratePlot from "./ShowPlot.jsx"
-import React,{useEffect} from 'react';
+import React,{useEffect, useState} from 'react';
+import YourFiles from './YourFiles.jsx';
+
 import { useNavigate } from "react-router-dom";
 
 
 const MainPage = () => {
     const navigate = useNavigate();
+const [htmlContent, setHtmlContent] = useState("");
 
-    useEffect(()=>{
-      document.title="skillGAPped";
-    },[]);
-  
-    return(
+  useEffect(()=>{
+    document.title="skillGAPped";
+  },[]);
+
+  return(
+    <>
       <div className="App-background">
-            <NavBar/>
-            <ShowPlot/>
-            <div className="UltraCoolButtons">
-              <UploadFile/>
-              <GeneratePlot/>
-            </div>
+        <NavBar/>
+       <YourFiles setHtmlContent={setHtmlContent} />
+        <div>
+          <ShowPlot htmlContent={htmlContent} />
+          <div className="UltraCoolButtons">
+            <UploadFile/>
+          </div>
+        </div>
       </div>
-    );
-    }
-  
-  export default MainPage;
+    </>
+
+  );
+  }
+
+export default MainPage;
   
