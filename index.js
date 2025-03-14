@@ -76,7 +76,7 @@ async function RunScriptTest(file) {
 function AddToQueue(Name) {
     Obj = {
         "Name": Name,
-        "TriesLeft": 5,
+        "TriesLeft": 15,
     } 
     ConversionQueue.push(Obj);
     // console.log(ConversionQueue)
@@ -162,7 +162,7 @@ app.get("/Add", (req,res) => {
 app.post("/getFileData", (req, res) => {
     console.log("tried")
     var data = req.body;
-    console.log(data["Location"] + "/" + data["FileName"]);
+    // console.log(data["Location"] + "/" + data["FileName"]);
     
     var filePath = "";
     if (data["Location"] == ""){
@@ -172,7 +172,7 @@ app.post("/getFileData", (req, res) => {
     }
 
     filePath = path.resolve(filePath, data["FileName"]);
-
+    console.log(filePath)
     res.sendFile(filePath, (err) => {
         if (err) {
             console.error("Error sending the file", err);

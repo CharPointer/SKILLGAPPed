@@ -18,6 +18,7 @@ narwhals==1.30.0
 numpy==2.2.3
 packaging==24.2
 pandas==2.2.3
+pillow==11.1.0
 plotly==6.0.0
 pyasn1==0.6.1
 pyasn1_modules==0.4.1
